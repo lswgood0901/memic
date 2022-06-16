@@ -223,6 +223,13 @@ function drawSilhouette(toggle, prediction1, prediction2, pose1, pose2) {
           }
         }
       }
+      // for (let i = 0; i < skeleton2.length; i++) {
+      //   let partA = skeleton2[j][0]
+      //   let partB = skeleton2[j][1]
+      //   stroke(255)
+      //   strokeWeight(3)
+      //   line(partA.position.x, partA.position.y, partB.position.x, partB.position.y)
+      // }
     }
   }
 }
@@ -258,3 +265,9 @@ function mouseReleased() {
     pose_flag = true
   }
 }
+// 외부 링크나 파일 추가할수있는 버튼
+// 타겟 사진 >> 결과물 
+// 버튼추가해서 인풋 이미지 오버레이해서 보여주기 + 가까워지면 오버레이 0 되게 고민. 
+// 최종 디자인 정리 
+// 저장
+// 뒤로가기버튼
