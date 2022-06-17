@@ -17,69 +17,48 @@ let pose_flag = false;
 let button_flag = false;
 let button;
 let temp_i;
+let cur_i;
+let nose_dist;
 
 function preload() {
-  for (let i = 1; i < 12; i++){
+  for (let i = 1; i < 26; i++){
     let list = 'images/' + i + '.jpg'
     let img1 = loadImage(list)
     img_list.push(img1)
   }
 }
 function setup() {
-  createCanvas(480, 1600)
-  for (let i = 0; i < 11; i++) {
+  createCanvas(1080, 2280)
+  background(255)
+  for (let i = 0; i < 25; i++) {
     button_list.push(new Button(i, img_list[i]))
-    
-    // button_list[i].display()
-    // button_list[i].over()
-    // image(img_list[i], 8+(i)%2*228+i%2*8, 16+Math.floor(i/2)*228+i%2*8, 228, 228)
   }
-  // createCanvas(480, 640);
-  // img = createImg('images/lisa_2.jpg', imageReady);
-  // img.size(480, 480);
-  // img.hide(); 
-  
-  // video = createCapture(VIDEO);
-  // video.size(480, 480);
-  
-  // poseNet_video = ml5.poseNet(video);
-  // poseNet_video.on('pose', function(results) {
-  //   poseNet_video_poses = results;
-  // });
-  // facemesh_video = ml5.facemesh(video);
-  // facemesh_video.on("predict", results => {
-  //   predictions_video =  results;
-  // });
-  // video.hide()
-  // button = createButton("click me")
-  // button.position(220, 600)
-  // button.mousePressed(() => {
-  //   button_flag = !button_flag
-  //   console.log(button_flag)
-  // })
-}
+} 
 
 function draw() {
   temp_i = undefined
   if(!input_flag){
-    for (let i = 0; i < 11; i++) {
+    for (let i = 0; i < 25; i++) {
       button_list[i].display()
       if (button_list[i].over()) {
         temp_i = i
       }
-      // image(img_list[i], 8+(i)%2*228+i%2*8, 16+Math.floor(i/2)*228+i%2*8, 228, 228)
     }
   }
   if (pose_flag) {
     mode_transition(temp_i)
+    cur_i = temp_i
     pose_flag = false
     input_flag = true
   }
   if(input_flag){
-    background(255)
-    image(video, 0, 0, 640, 480);
+    background(0)
+    noTint();
+    image(video, 0, 372, 1440, 1080);
+    
     drawInput(button_flag, predictions_input, poseNet_input_poses)
     drawSilhouette(button_flag, predictions_video, predictions_input, poseNet_video_poses, poseNet_input_poses)
+    
     }
 }
 
@@ -102,13 +81,12 @@ function posemodelReady() {
   poseNet_input.singlePose(img)
 }
 function mode_transition(i) {
-  resizeCanvas(480, 640);
+  // resizeCanvas(480, 640);
   img = createImg('images/'+(i+1)+'.jpg', imageReady);
-  img.size(480, 480);
+  img.size(1080, 1080);
   img.hide(); 
-  
   video = createCapture(VIDEO);
-  video.size(480, 480);
+  video.size(1440, 1080);
   
   poseNet_video = ml5.poseNet(video);
   poseNet_video.on('pose', function(results) {
@@ -120,7 +98,7 @@ function mode_transition(i) {
   });
   video.hide()
   button = createButton("click me")
-  button.position(220, 600)
+  button.position(660, 1800)
   button.mousePressed(() => {
   button_flag = !button_flag
   })
@@ -137,34 +115,24 @@ function drawInput(toggle, prediction, poses) {
         const [x1, y1] = keypoints[j];
         noStroke()
         fill("rgba(230, 230, 230, 0.8)")
-        ellipse(x1,y1,3,3)
+        ellipse(x1,y1+372,9,9)
       }
-    }
-    for (let i = 0; i < poses.length; i++) {
-      let pose = poses[i].pose
-      let skeleton = poses[i].skeleton
-      for (let j = 0; j < pose.keypoints.length; j++) {
-          let keypoint = pose.keypoints[j];
-          if (keypoint.score >  0.1 && j > 4) {
-            fill(230, 230, 230);
-            noStroke();
-            ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
-            textSize(12)
-            text(keypoint.part, keypoint.position.x+8, keypoint.position.y+8)
-          }
-      }
-      // for (let j = 0; j < skeleton.length; j++) {
-      //     let partA = skeleton[j][0];
-      //     let partB = skeleton[j][1];
-      //     stroke(255);
-      //     strokeWeight(3);
-      //     line(partA.position.x, partA.position.y, partB.position.x, partB.position.y);
-      //   }
     }
   }
 }
 function drawSilhouette(toggle, prediction1, prediction2, pose1, pose2) {
-  if(toggle) {
+  push()
+  tint(255, 127);
+  if(nose_dist){
+    let map_d = 127
+    if(nose_dist < 80){
+      map_d = map(nose_dist, 0, 80, 0, 127)
+      tint(255, map_d)
+    }
+  }
+  image(img_list[cur_i], 0, 372, 1080, 1080);
+  pop()
+  if (toggle) {
     for (let i = 0; i < prediction1.length; i++) {
       const flag = prediction2[i] ?? false;
       if (flag) {
@@ -173,63 +141,22 @@ function drawSilhouette(toggle, prediction1, prediction2, pose1, pose2) {
         for (let j = 0; j < keypoints1.length; j++) {
           const [x1, y1] = keypoints1[j];
           const [x2, y2] = keypoints2[j];
-          const sil_dist = dist(x1, y1, x2, y2)
+          const sil_dist = dist(x1 * 2.25, y1 * 2.25, x2, y2)
           if (sil_dist < 20) {
-            stroke("rgba(12,236,221,0.1)")
-            strokeWeight(1)
-            line(x1,y1,x2,y2)
             noStroke()
             fill("rgba(12, 236, 221, 0.9)")
-            ellipse(x1, y1, 4, 4)
+            ellipse(x1*2.25, y1*2.25+372, 8, 8)
           }
           else {
-            stroke("rgba(255,103,231,0.1)")
-            strokeWeight(1)
-            line(x1,y1,x2,y2)
             noStroke();
             fill("rgba(255, 103, 231,0.9)")
-            ellipse(x1,y1,4,4)
+            ellipse(x1*2.25,y1*2.25+372,8,8)
           }
         }
+        let [n_x1, n_y1, z1] = prediction1[i].annotations.noseTip[0]
+        let [n_x2, n_y2, z2] = prediction2[i].annotations.noseTip[0]
+        nose_dist = dist(n_x1*2.25, n_y1*2.25, n_x2, n_y2)
       }
-    }
-  
-    const pose1_flag = pose1[0] ?? false;
-    const pose2_flag = pose2[0] ?? false;
-
-    if (pose1_flag && pose2_flag) {
-      const poses1 = pose1[0].pose
-      const skeleton1 = pose1[0].skeleton
-      const poses2 = pose2[0].pose
-      const skeleton2 = pose2[0].skeleton
-      for (let i = 0; i < poses2.keypoints.length; i++) {
-        let keypoint1 = poses1.keypoints[i]
-        console.log(keypoint1)
-        let keypoint2 = poses2.keypoints[i]
-        const key_dist = dist(keypoint1.position.x, keypoint1.position.y, keypoint2.position.x, keypoint2.position.y)
-        if(keypoint1.score >  0.1 && keypoint2.score > 0.1 && i > 4){
-          if (key_dist < 20) {
-            noStroke()
-            fill("rgba(12, 236, 221, 0.9)")
-            ellipse(keypoint1.position.x, keypoint1.position.y, 10, 10)
-            textSize(12)
-            text(keypoint1.part, keypoint1.position.x+8, keypoint1.position.y+8)
-          } else {
-            noStroke()
-            fill("rgba(255, 103, 231,0.9)")
-            ellipse(keypoint1.position.x, keypoint1.position.y, 10, 10)
-            textSize(12)
-            text(keypoint1.part, keypoint1.position.x+8, keypoint1.position.y+8)
-          }
-        }
-      }
-      // for (let i = 0; i < skeleton2.length; i++) {
-      //   let partA = skeleton2[j][0]
-      //   let partB = skeleton2[j][1]
-      //   stroke(255)
-      //   strokeWeight(3)
-      //   line(partA.position.x, partA.position.y, partB.position.x, partB.position.y)
-      // }
     }
   }
 }
@@ -237,10 +164,10 @@ function drawSilhouette(toggle, prediction1, prediction2, pose1, pose2) {
 class Button {
   constructor(i, inImg) {
     this.i = i
-    this.x = 8+(i)%2*228+i%2*8;
-    this.y = 16+Math.floor(i/2)*228+i%2*8;
-    this.w = 228
-    this.h = 228
+    this.x = 18+(i)%2*516+i%2*12;
+    this.y = 210+Math.floor(i/2)*516 + Math.floor(i/2)*12;
+    this.w = 516
+    this.h = 516
     this.img = inImg;
   }
   display() {
