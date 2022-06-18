@@ -19,13 +19,22 @@ let button;
 let temp_i;
 let cur_i;
 let nose_dist;
-
+let searchBox;
+let hideBtn;
+let shotBtn;
+let showBtn;
+let backBtn;
 function preload() {
   for (let i = 1; i < 26; i++){
     let list = 'images/' + i + '.jpg'
     let img1 = loadImage(list)
     img_list.push(img1)
   }
+  searchBox = loadImage('images/searchBox.png')
+  hideBtn = loadImage('images/hideBtn.png')
+  shotBtn = loadImage('images/shotBtn.png')
+  showBtn = loadImage('images/showBtn.png')
+  backBtn = loadImage('images/backBtn.png')
 }
 function setup() {
   createCanvas(1080, 2280)
@@ -37,7 +46,8 @@ function setup() {
 
 function draw() {
   temp_i = undefined
-  if(!input_flag){
+  if (!input_flag) {
+    image(searchBox, 18, 123, 1044, 72)
     for (let i = 0; i < 25; i++) {
       button_list[i].display()
       if (button_list[i].over()) {
@@ -55,7 +65,14 @@ function draw() {
     background(0)
     noTint();
     image(video, 0, 372, 1440, 1080);
-    
+    image(shotBtn, 450, 1884, 180, 180)
+    image(backBtn, 168, 1902, 144, 144)
+    if (button_flag) {
+      image(hideBtn, 768, 1902, 144, 144)
+    }
+    else if (!button_flag) {
+      image(showBtn, 768, 1902, 144, 144)
+    }
     drawInput(button_flag, predictions_input, poseNet_input_poses)
     drawSilhouette(button_flag, predictions_video, predictions_input, poseNet_video_poses, poseNet_input_poses)
     
@@ -97,11 +114,6 @@ function mode_transition(i) {
     predictions_video =  results;
   });
   video.hide()
-  button = createButton("click me")
-  button.position(660, 1800)
-  button.mousePressed(() => {
-  button_flag = !button_flag
-  })
 }
 function drawInput(toggle, prediction, poses) {
   if(toggle){
@@ -192,9 +204,13 @@ function mouseReleased() {
     pose_flag = true
   }
 }
-// 외부 링크나 파일 추가할수있는 버튼
+function touchEnded() {
+  if (dist(mouseX, mouseY, 840, 1974) < 80) {
+      button_flag = !button_flag
+  }
+  
+}
 // 타겟 사진 >> 결과물 
-// 버튼추가해서 인풋 이미지 오버레이해서 보여주기 + 가까워지면 오버레이 0 되게 고민. 
 // 최종 디자인 정리 
 // 저장
 // 뒤로가기버튼
