@@ -53,8 +53,8 @@ function preload() {
   
 }
 function setup() {
-  // createCanvas(1080, 2000)
-  createCanvas(windowWidth, windowHeight)
+  createCanvas(1080, 2000)
+  // createCanvas(windowWidth, windowHeight)
   background(255)
   frameRate(24)
   for (let i = 0; i < 25; i++) {
@@ -91,9 +91,9 @@ function draw() {
   if(input_flag){
     background(0)
     noTint();
-    image(video, 0, 372, 1080, 1440);
+    image(video, 0, 240, 1080, 1440);
     fill(0)
-    rect(0,1452,1080,400)
+    rect(0,1318,1080,400)
     image(shotBtn, 450, 1604, 180, 180)
     image(backBtn, 168, 1622, 144, 144)
     if (button_flag) {
@@ -158,10 +158,10 @@ function drawInput(toggle, prediction, poses) {
         noStroke()
         if(!face_outline.includes(j)){
           fill("rgba(230, 230, 230, 0.8)")
-          ellipse(x1,y1+372,8,8)
+          ellipse(x1,y1+240,8,8)
         } else if (face_outline.includes(j)){
           fill("rgba(230, 230, 230, 0.3)")
-          ellipse(x1,y1+372,4,4)
+          ellipse(x1,y1+240,4,4)
         }
       }
     }
@@ -179,7 +179,7 @@ function drawSilhouette(toggle, prediction1, prediction2, pose1, pose2) {
       }
     }
 
-    image(img_list[shuffle_list[cur_i]], 0, 372, 1080, 1080);
+    image(img_list[shuffle_list[cur_i]], 0, 240, 1080, 1080);
 
     pop()
     for (let i = 0; i < prediction1.length; i++) {
@@ -209,24 +209,24 @@ function drawSilhouette(toggle, prediction1, prediction2, pose1, pose2) {
           if (sil_dist < 20 && !face_outline.includes(j)) {
             noStroke()
             fill("rgba(12, 236, 221, 0.9)")
-            ellipse(x1 * face_aspect, y1 * face_aspect + 372, 8, 8)
+            ellipse(x1 * face_aspect, y1 * face_aspect + 240, 8, 8)
             status_check.push(1)
           }
           else if (sil_dist < 20 && face_outline.includes(j)) {
             noStroke()
             fill("rgba(12, 236, 221, 0.3)")
-            ellipse(x1*face_aspect, y1*face_aspect+372, 4, 4)
+            ellipse(x1*face_aspect, y1*face_aspect+240, 4, 4)
           }
           else if (sil_dist >= 20 && !face_outline.includes(j)) {
             noStroke();
             fill("rgba(255, 103, 231,0.9)")
-            ellipse(x1 * face_aspect, y1 * face_aspect + 372, 8, 8)
+            ellipse(x1 * face_aspect, y1 * face_aspect + 240, 8, 8)
             status_check.push(0)
           }
           else if(sil_dist >= 20 && face_outline.includes(j)){
             noStroke();
             fill("rgba(255, 103, 231,0.3)")
-            ellipse(x1*face_aspect,y1*face_aspect+372,4,4)
+            ellipse(x1*face_aspect,y1*face_aspect+240,4,4)
           }
         }
         let status_ratio = status_check.reduce((a, b) => a + b, 0) / status_check.length
@@ -305,10 +305,10 @@ function touchEnded() {
       button_flag=true
     }, 2000)
   }
-  if (dist(mouseX, mouseY, 400, 400) < 100) {
-    let fs = fullscreen()
-    fullscreen(!fs)
-  }
+  // if (dist(mouseX, mouseY, 540, 500) < 150) {
+  //   let fs = fullscreen()
+  //   fullscreen(!fs)
+  // }
   return false 
 }
 
@@ -321,7 +321,7 @@ function feedback() {
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
-    text(feedback_text[0], 276, 1452, 528, 72)
+    text(feedback_text[0], 276, 1440, 528, 72)
     pop()
   }
   else if (cur_status[0] == 1 && cur_status[1] == false) {
@@ -332,7 +332,7 @@ function feedback() {
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
-    text(feedback_text[1], 276, 1452, 528, 72)
+    text(feedback_text[1], 276, 1440, 528, 72)
     pop()
   }
   else if (cur_status[0] == 2 && cur_status[1] == false) {
@@ -343,7 +343,7 @@ function feedback() {
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
-    text(feedback_text[2], 276, 1452, 528, 72)
+    text(feedback_text[2], 276, 1440, 528, 72)
     pop()
   }
   else if (cur_status[0] == 2 && cur_status[1] == true) {
@@ -354,7 +354,7 @@ function feedback() {
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
-    text(feedback_text[3], 276, 1452, 528, 72)
+    text(feedback_text[3], 276, 1440, 528, 72)
     pop()
     button_flag = false
     setTimeout(() => {
@@ -371,7 +371,4 @@ function shuffle(array) {
     array[index] = array[randomPosition];
     array[randomPosition] = temporary;
   }
-}
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
 }
