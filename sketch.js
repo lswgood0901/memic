@@ -53,8 +53,10 @@ function preload() {
   
 }
 function setup() {
-  createCanvas(1080, 2000)
+  // createCanvas(1080, 2000)
+  createCanvas(windowWidth, windowHeight)
   background(255)
+  frameRate(24)
   for (let i = 0; i < 25; i++) {
     shuffle_list.push(i)
   }
@@ -303,6 +305,10 @@ function touchEnded() {
       button_flag=true
     }, 2000)
   }
+  if (dist(mouseX, mouseY, 400, 400) < 100) {
+    let fs = fullscreen()
+    fullscreen(!fs)
+  }
   return false 
 }
 
@@ -311,44 +317,44 @@ function feedback() {
     push()
     fill(230)
       .strokeWeight(0)
-      .textSize(64)
+      .textSize(48)
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
-    text(feedback_text[0], 276, 1352, 528, 72)
+    text(feedback_text[0], 276, 1452, 528, 72)
     pop()
   }
   else if (cur_status[0] == 1 && cur_status[1] == false) {
     push()
     fill(230)
       .strokeWeight(0)
-      .textSize(64)
+      .textSize(48)
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
-    text(feedback_text[1], 276, 1352, 528, 72)
+    text(feedback_text[1], 276, 1452, 528, 72)
     pop()
   }
   else if (cur_status[0] == 2 && cur_status[1] == false) {
     push()
     fill(230)
       .strokeWeight(0)
-      .textSize(64)
+      .textSize(48)
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
-    text(feedback_text[2], 276, 1352, 528, 72)
+    text(feedback_text[2], 276, 1452, 528, 72)
     pop()
   }
   else if (cur_status[0] == 2 && cur_status[1] == true) {
     push()
     fill(230)
       .strokeWeight(0)
-      .textSize(64)
+      .textSize(48)
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
-    text(feedback_text[3], 276, 1352, 528, 72)
+    text(feedback_text[3], 276, 1452, 528, 72)
     pop()
     button_flag = false
     setTimeout(() => {
@@ -365,4 +371,7 @@ function shuffle(array) {
     array[index] = array[randomPosition];
     array[randomPosition] = temporary;
   }
+}
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
