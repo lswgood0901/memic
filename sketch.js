@@ -68,10 +68,11 @@ function draw() {
     }
   }
   if (pose_flag) {
-    mode_transition(temp_i)
-    cur_i = temp_i
-    pose_flag = false
-    input_flag = true
+    mode_transition(temp_i, () => {
+      pose_flag = false
+      cur_i = temp_i
+      input_flag = true
+    })
   }
   if(input_flag){
     background(0)
@@ -287,10 +288,6 @@ function touchEnded() {
       button_flag=true
     }, 2000)
   }
-  if(mouseX > 0 && mouseX <400 && mouseY > 0 && mouseY < 400){
-    let fs = fullscreen();
-    fullscreen(!fs);
-  }
   return false 
 }
 
@@ -343,6 +340,23 @@ function feedback() {
       button_flag = true
     }, 1000);
   }
+}
+
+function touchStarted() {
+  let fs = fullscreen()
+  if (!fs) {
+    fullscreen(true)
+  }
+  return false
+}
+function touchMoved() {
+  return false
+}
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight)
+}
+document.ontouchmove = function (event) {
+  event.preventDefault()
 }
 // 타겟 사진 >> 결과물 
 // 최종 디자인 정리 
