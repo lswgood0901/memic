@@ -53,7 +53,7 @@ function preload() {
   
 }
 function setup() {
-  createCanvas(1080, 2280)
+  createCanvas(1080, 2000)
   background(255)
   for (let i = 0; i < 25; i++) {
     shuffle_list.push(i)
@@ -92,13 +92,13 @@ function draw() {
     image(video, 0, 372, 1080, 1440);
     fill(0)
     rect(0,1452,1080,400)
-    image(shotBtn, 450, 1884, 180, 180)
-    image(backBtn, 168, 1902, 144, 144)
+    image(shotBtn, 450, 1604, 180, 180)
+    image(backBtn, 168, 1622, 144, 144)
     if (button_flag) {
-      image(hideBtn, 768, 1902, 144, 144)
+      image(hideBtn, 768, 1622, 144, 144)
     }
     else if (!button_flag) {
-      image(showBtn, 768, 1902, 144, 144)
+      image(showBtn, 768, 1622, 144, 144)
     }
     drawInput(button_flag, predictions_input, poseNet_input_poses)
     drawSilhouette(button_flag, predictions_video, predictions_input, poseNet_video_poses, poseNet_input_poses)
@@ -290,13 +290,13 @@ function touchEnded() {
   if (temp_i !== undefined) {
     pose_flag = true
   }
-  if (dist(mouseX, mouseY, 840, 1974) < 80) {
+  if (dist(mouseX, mouseY, 840, 1694) < 80) {
     button_flag = !button_flag
   }
-  if (dist(mouseX, mouseY, 240, 1974) < 80) {
+  if (dist(mouseX, mouseY, 240, 1694) < 80) {
     input_flag = !input_flag
   }
-  if (dist(mouseX, mouseY, 540, 1974) < 100) {
+  if (dist(mouseX, mouseY, 540, 1694) < 100) {
     button_flag = false
     saveFrames(video, 'jpg', 1, 1)
     setTimeout(() => {
@@ -315,7 +315,7 @@ function feedback() {
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
-    text(feedback_text[0], 276, 1632, 528, 72)
+    text(feedback_text[0], 276, 1352, 528, 72)
     pop()
   }
   else if (cur_status[0] == 1 && cur_status[1] == false) {
@@ -326,7 +326,7 @@ function feedback() {
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
-    text(feedback_text[1], 276, 1632, 528, 72)
+    text(feedback_text[1], 276, 1352, 528, 72)
     pop()
   }
   else if (cur_status[0] == 2 && cur_status[1] == false) {
@@ -337,7 +337,7 @@ function feedback() {
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
-    text(feedback_text[2], 276, 1632, 528, 72)
+    text(feedback_text[2], 276, 1352, 528, 72)
     pop()
   }
   else if (cur_status[0] == 2 && cur_status[1] == true) {
@@ -348,7 +348,7 @@ function feedback() {
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
-    text(feedback_text[3], 276, 1632, 528, 72)
+    text(feedback_text[3], 276, 1352, 528, 72)
     pop()
     button_flag = false
     setTimeout(() => {
