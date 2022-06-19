@@ -50,6 +50,11 @@ function preload() {
   showBtn = loadImage('images/showBtn.png')
   backBtn = loadImage('images/backBtn.png')
   let test = createCapture(VIDEO)
+  test_x = test.width
+  test_y = test.height
+  console.log(test_x, test_y)
+  test.hide()
+  
 }
 function setup() {
   createCanvas(1080, 2280)
@@ -99,8 +104,18 @@ function draw() {
     feedback()
     
   }
-  fill(255, 255, 0)
-    rect(0,0,1080,200)
+  // fill(255,0,0)
+  // rect(0, 0, 1080, 200)
+    fill(255,0,0)
+      .strokeWeight(0)
+      .textSize(80)
+    textFont('Roboto')
+    textStyle('BOLD')
+    textAlign(CENTER)
+    text(test_x, 500, 500, 528, 160)
+    text(test_y, 200, 200, 528, 160)
+  
+  
 }
 
 function imageReady(){
