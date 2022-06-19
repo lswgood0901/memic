@@ -12,6 +12,8 @@ let poseNet_video;
 let poseNet_video_poses = [];
 let sillhoutte_distance = [];
 let video;
+let v_width;
+let v_height;
 let input_flag = false;
 let pose_flag = false;
 let button_flag = true;
@@ -46,6 +48,7 @@ function preload() {
   shotBtn = loadImage('images/shotBtn.png')
   showBtn = loadImage('images/showBtn.png')
   backBtn = loadImage('images/backBtn.png')
+
 }
 function setup() {
   createCanvas(1080, 2280)
@@ -120,7 +123,8 @@ function mode_transition(i) {
   img.size(1080, 1080);
   img.hide(); 
   video = createCapture(VIDEO);
-  video.size(1440, 1080);
+  
+  video.size(1080, 1440);
   
   poseNet_video = ml5.poseNet(video);
   poseNet_video.on('pose', function(results) {
