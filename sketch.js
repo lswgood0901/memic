@@ -251,26 +251,25 @@ class Button {
     }
   }
 }
-function mouseReleased() {
-  if (temp_i !== undefined) {
-    pose_flag = true
-  }
-  if (dist(mouseX, mouseY, 240, 1974) < 80) {
-    input_flag = !input_flag
-  }
-  if (dist(mouseX, mouseY, 840, 1974) < 80) {
-    button_flag = !button_flag
-  }
-  if (dist(mouseX, mouseY, 540, 1974) < 100) {
-    button_flag = false
-    saveFrames(video, 'jpg', 1, 1)
-    setTimeout(() => {
-      button_flag=true
-    }, 2000)
+// function mouseReleased() {
+//   if (temp_i !== undefined) {
+//     pose_flag = true
+//   }
+//   if (dist(mouseX, mouseY, 240, 1974) < 80) {
+//     input_flag = !input_flag
+//   }
+//   if (dist(mouseX, mouseY, 840, 1974) < 80) {
+//     button_flag = !button_flag
+//   }
+//   if (dist(mouseX, mouseY, 540, 1974) < 100) {
+//     button_flag = false
+//     saveFrames(video, 'jpg', 1, 1)
+//     setTimeout(() => {
+//       button_flag=true
+//     }, 2000)
 
-  }
-  
-}
+//   } 
+// }
 function touchEnded() {
   if (temp_i !== undefined) {
     pose_flag = true
@@ -282,7 +281,15 @@ function touchEnded() {
     input_flag = !input_flag
   }
   if (dist(mouseX, mouseY, 540, 1974) < 100) {
-    // video.save("hi")
+    button_flag = false
+    saveFrames(video, 'jpg', 1, 1)
+    setTimeout(() => {
+      button_flag=true
+    }, 2000)
+  }
+  if(mouseX > 0 && mouseX <100 && mouseY > 0 && mouseY < 100){
+    let fs = fullscreen();
+    fullscreen(!fs);
   }
     
 }
