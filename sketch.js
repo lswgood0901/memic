@@ -27,6 +27,7 @@ let hideBtn;
 let shotBtn;
 let showBtn;
 let backBtn;
+let face_aspect = 1;
 let cur_status = [0,false];
 let face_outline = [21, 54, 103, 67, 109, 10, 338, 297, 332,
   284, 251, 389, 356, 454, 323, 401, 435, 288, 367, 397, 365,
@@ -82,7 +83,9 @@ function draw() {
   if(input_flag){
     background(0)
     noTint();
-    image(video, 0, 372, 1440, 1080);
+    image(video, 0, 372, 1920, 1080);
+    fill(0)
+    rect(0,1452,1080,828)
     image(shotBtn, 450, 1884, 180, 180)
     image(backBtn, 168, 1902, 144, 144)
     if (button_flag) {
@@ -95,8 +98,6 @@ function draw() {
     drawSilhouette(button_flag, predictions_video, predictions_input, poseNet_video_poses, poseNet_input_poses)
     feedback()
   }
-  fill(127)
-  rect(0, 0, 1080, 100)
 }
 
 function imageReady(){
@@ -183,7 +184,7 @@ function drawSilhouette(toggle, prediction1, prediction2, pose1, pose2) {
         const [v_bbx2, v_bby2] = prediction1[i].boundingBox.bottomRight[0]
         const [i_bbx1, i_bby1] = prediction2[i].boundingBox.topLeft[0]
         const [i_bbx2, i_bby2] = prediction2[i].boundingBox.bottomRight[0]
-        let aspect = ((v_bbx2 - v_bbx1)*2.25 * (v_bby2 - v_bby1)*2.25) / ((i_bbx2 - i_bbx1) * (i_bby2 - i_bby1))
+        let aspect = ((v_bbx2 - v_bbx1)*face_aspect * (v_bby2 - v_bby1)*face_aspect) / ((i_bbx2 - i_bbx1) * (i_bby2 - i_bby1))
         if (aspect < 0.9) {
           cur_status[0] = 0 // come closer
         }
@@ -196,28 +197,28 @@ function drawSilhouette(toggle, prediction1, prediction2, pose1, pose2) {
         for (let j = 0; j < keypoints1.length; j++) {
           const [x1, y1] = keypoints1[j];
           const [x2, y2] = keypoints2[j];
-          const sil_dist = dist(x1 * 2.25, y1 * 2.25, x2, y2)
+          const sil_dist = dist(x1 * face_aspect, y1 * face_aspect, x2, y2)
           if (sil_dist < 20 && !face_outline.includes(j)) {
             noStroke()
             fill("rgba(12, 236, 221, 0.9)")
-            ellipse(x1 * 2.25, y1 * 2.25 + 372, 8, 8)
+            ellipse(x1 * face_aspect, y1 * face_aspect + 372, 8, 8)
             status_check.push(1)
           }
           else if (sil_dist < 20 && face_outline.includes(j)) {
             noStroke()
             fill("rgba(12, 236, 221, 0.3)")
-            ellipse(x1*2.25, y1*2.25+372, 4, 4)
+            ellipse(x1*face_aspect, y1*face_aspect+372, 4, 4)
           }
           else if (sil_dist >= 20 && !face_outline.includes(j)) {
             noStroke();
             fill("rgba(255, 103, 231,0.9)")
-            ellipse(x1 * 2.25, y1 * 2.25 + 372, 8, 8)
+            ellipse(x1 * face_aspect, y1 * face_aspect + 372, 8, 8)
             status_check.push(0)
           }
           else if(sil_dist >= 20 && face_outline.includes(j)){
             noStroke();
             fill("rgba(255, 103, 231,0.3)")
-            ellipse(x1*2.25,y1*2.25+372,4,4)
+            ellipse(x1*face_aspect,y1*face_aspect+372,4,4)
           }
         }
         let status_ratio = status_check.reduce((a, b) => a + b, 0) / status_check.length
@@ -228,7 +229,7 @@ function drawSilhouette(toggle, prediction1, prediction2, pose1, pose2) {
         }
         let [n_x1, n_y1, z1] = prediction1[i].annotations.noseTip[0]
         let [n_x2, n_y2, z2] = prediction2[i].annotations.noseTip[0]
-        nose_dist = dist(n_x1*2.25, n_y1*2.25, n_x2, n_y2)
+        nose_dist = dist(n_x1*face_aspect, n_y1*face_aspect, n_x2, n_y2)
       }
     }
   }
