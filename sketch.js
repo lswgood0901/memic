@@ -287,11 +287,11 @@ function touchEnded() {
       button_flag=true
     }, 2000)
   }
-  if(mouseX > 0 && mouseX <100 && mouseY > 0 && mouseY < 100){
+  if(mouseX > 0 && mouseX <400 && mouseY > 0 && mouseY < 400){
     let fs = fullscreen();
     fullscreen(!fs);
   }
-    
+  return false 
 }
 
 function feedback() {
@@ -305,7 +305,6 @@ function feedback() {
     textAlign(CENTER)
     text(feedback_text[0], 276, 1632, 528, 72)
     pop()
-    shot_flag = false
   }
   else if (cur_status[0] == 1 && cur_status[1] == false) {
     push()
@@ -317,7 +316,6 @@ function feedback() {
     textAlign(CENTER)
     text(feedback_text[1], 276, 1632, 528, 72)
     pop()
-    shot_flag = false
   }
   else if (cur_status[0] == 2 && cur_status[1] == false) {
     push()
@@ -329,7 +327,6 @@ function feedback() {
     textAlign(CENTER)
     text(feedback_text[2], 276, 1632, 528, 72)
     pop()
-    shot_flag = false
   }
   else if (cur_status[0] == 2 && cur_status[1] == true) {
     push()
@@ -341,12 +338,9 @@ function feedback() {
     textAlign(CENTER)
     text(feedback_text[3], 276, 1632, 528, 72)
     pop()
-    shot_flag = true
     button_flag = false
     setTimeout(() => {
-      if (!shot_flag) {
-        button_flag = true
-      }
+      button_flag = true
     }, 1000);
   }
 }
