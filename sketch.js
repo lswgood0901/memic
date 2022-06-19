@@ -1,4 +1,5 @@
 let img_list = [];
+let shuffle_list = [];
 let button_list = []
 let mouse_event;
 let img;
@@ -40,7 +41,7 @@ let face_outline = [21, 54, 103, 67, 109, 10, 338, 297, 332,
   let feedback_text = ["Come closer.", "Step back a little.","Almost done!" ,"It's time to take a shot!"]
 function preload() {
   for (let i = 1; i < 26; i++){
-    let list = 'images/' + i + '.jpg'
+    let list = 'images/' + i + '.png'
     let img1 = loadImage(list)
     img_list.push(img1)
   }
@@ -55,7 +56,12 @@ function setup() {
   createCanvas(1080, 2280)
   background(255)
   for (let i = 0; i < 25; i++) {
-    button_list.push(new Button(i, img_list[i]))
+    shuffle_list.push(i)
+  }
+  shuffle_list = shuffle(shuffle_list)
+  console.log(shuffle_list)
+  for (let i = 0; i < 25; i++) {
+    button_list.push(new Button(i, img_list[shuffle_list[i]]))
   }
 } 
 
@@ -120,7 +126,7 @@ function posemodelReady() {
 }
 function mode_transition(i) {
   // resizeCanvas(480, 640);
-  img = createImg('images/'+(i+1)+'.jpg', imageReady);
+  img = createImg('images/'+(shuffle_list[i]+1)+'.png', imageReady);
   img.size(1080, 1080);
   img.hide(); 
   video = createCapture(VIDEO);
@@ -171,7 +177,7 @@ function drawSilhouette(toggle, prediction1, prediction2, pose1, pose2) {
       }
     }
 
-    image(img_list[cur_i], 0, 372, 1080, 1080);
+    image(img_list[shuffle_list[cur_i]], 0, 372, 1080, 1080);
 
     pop()
     for (let i = 0; i < prediction1.length; i++) {
@@ -305,7 +311,7 @@ function feedback() {
     push()
     fill(230)
       .strokeWeight(0)
-      .textSize(40)
+      .textSize(64)
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
@@ -316,7 +322,7 @@ function feedback() {
     push()
     fill(230)
       .strokeWeight(0)
-      .textSize(40)
+      .textSize(64)
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
@@ -327,7 +333,7 @@ function feedback() {
     push()
     fill(230)
       .strokeWeight(0)
-      .textSize(40)
+      .textSize(64)
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
@@ -338,7 +344,7 @@ function feedback() {
     push()
     fill(230)
       .strokeWeight(0)
-      .textSize(40)
+      .textSize(64)
     textFont('Roboto')
     textStyle('BOLD')
     textAlign(CENTER)
@@ -351,9 +357,12 @@ function feedback() {
   }
 }
 
+function shuffle(array) {
+  for (let index = array.length - 1; index > 0; index--) {
+    const randomPosition = Math.floor(Math.random() * (index + 1));
 
-
-// 타겟 사진 >> 결과물 
-// 최종 디자인 정리 
-// 저장
-// 뒤로가기버튼
+    const temporary = array[index];
+    array[index] = array[randomPosition];
+    array[randomPosition] = temporary;
+  }
+}
