@@ -56,6 +56,7 @@ function setup() {
 } 
 
 function draw() {
+  
   temp_i = undefined
   if (!input_flag) {
     background(0)
@@ -68,11 +69,12 @@ function draw() {
     }
   }
   if (pose_flag) {
-    mode_transition(temp_i, () => {
-      pose_flag = false
-      cur_i = temp_i
+    mode_transition(temp_i)
+    setTimeout(() => {
       input_flag = true
-    })
+    }, 1000)
+    pose_flag = false
+    cur_i = temp_i
   }
   if(input_flag){
     background(0)
@@ -89,7 +91,9 @@ function draw() {
     drawInput(button_flag, predictions_input, poseNet_input_poses)
     drawSilhouette(button_flag, predictions_video, predictions_input, poseNet_video_poses, poseNet_input_poses)
     feedback()
-    }
+  }
+  fill(127)
+  rect(0, 0, 1080, 100)
 }
 
 function imageReady(){
@@ -342,22 +346,8 @@ function feedback() {
   }
 }
 
-function touchStarted() {
-  let fs = fullscreen()
-  if (!fs) {
-    fullscreen(true)
-  }
-  return false
-}
-function touchMoved() {
-  return false
-}
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight)
-}
-document.ontouchmove = function (event) {
-  event.preventDefault()
-}
+
+
 // 타겟 사진 >> 결과물 
 // 최종 디자인 정리 
 // 저장
