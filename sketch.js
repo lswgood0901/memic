@@ -27,7 +27,7 @@ let hideBtn;
 let shotBtn;
 let showBtn;
 let backBtn;
-let face_aspect = 1;
+let face_aspect = 2.25;
 let cur_status = [0,false];
 let face_outline = [21, 54, 103, 67, 109, 10, 338, 297, 332,
   284, 251, 389, 356, 454, 323, 401, 435, 288, 367, 397, 365,
@@ -49,8 +49,6 @@ function preload() {
   shotBtn = loadImage('images/shotBtn.png')
   showBtn = loadImage('images/showBtn.png')
   backBtn = loadImage('images/backBtn.png')
-  let test = createCapture(VIDEO)
-
   
 }
 function setup() {
@@ -85,9 +83,9 @@ function draw() {
   if(input_flag){
     background(0)
     noTint();
-    image(video, 0, 372, 1920, 1080);
+    image(video, 0, 372, 1080, 1440);
     fill(0)
-    rect(0,1452,1080,828)
+    rect(0,1452,1080,400)
     image(shotBtn, 450, 1884, 180, 180)
     image(backBtn, 168, 1902, 144, 144)
     if (button_flag) {
@@ -99,13 +97,7 @@ function draw() {
     drawInput(button_flag, predictions_input, poseNet_input_poses)
     drawSilhouette(button_flag, predictions_video, predictions_input, poseNet_video_poses, poseNet_input_poses)
     feedback()
-    
   }
-  fill(255,0,0)
-  rect(0, 0, 1080, 200)
-    
-  
-  
 }
 
 function imageReady(){
@@ -133,7 +125,7 @@ function mode_transition(i) {
   img.hide(); 
   video = createCapture(VIDEO);
   
-  video.size(1080, 1920);
+  video.size(1080, 1440);
   
   poseNet_video = ml5.poseNet(video);
   poseNet_video.on('pose', function(results) {
