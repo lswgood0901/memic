@@ -49,7 +49,7 @@ function preload() {
   shotBtn = loadImage('images/shotBtn.png')
   showBtn = loadImage('images/showBtn.png')
   backBtn = loadImage('images/backBtn.png')
-
+  let test = createCapture(VIDEO)
 }
 function setup() {
   createCanvas(1080, 2280)
