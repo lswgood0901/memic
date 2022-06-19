@@ -97,7 +97,10 @@ function draw() {
     drawInput(button_flag, predictions_input, poseNet_input_poses)
     drawSilhouette(button_flag, predictions_video, predictions_input, poseNet_video_poses, poseNet_input_poses)
     feedback()
+    
   }
+  fill(255, 255, 0)
+    rect(0,0,1080,200)
 }
 
 function imageReady(){
