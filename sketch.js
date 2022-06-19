@@ -124,7 +124,7 @@ function mode_transition(i) {
   img.hide(); 
   video = createCapture(VIDEO);
   
-  video.size(1080, 1440);
+  video.size(1080, 1920);
   
   poseNet_video = ml5.poseNet(video);
   poseNet_video.on('pose', function(results) {
