@@ -61,7 +61,6 @@ function setup() {
     shuffle_list.push(i)
   }
   shuffle_list = shuffle(shuffle_list)
-  console.log(shuffle_list)
   for (let i = 0; i < 25; i++) {
     button_list.push(new Button(i, img_list[shuffle_list[i]]))
   }
@@ -109,10 +108,10 @@ function draw() {
 }
 
 function imageReady(){
-  poseNet_input = ml5.poseNet(posemodelReady);
-  poseNet_input.on('pose', function (results) {
-      poseNet_input_poses = results;
-  });
+  // poseNet_input = ml5.poseNet(posemodelReady);
+  // poseNet_input.on('pose', function (results) {
+  //     poseNet_input_poses = results;
+  // });
   facemesh_input = ml5.facemesh(facemodelReady);
   facemesh_input.on("predict", results => {
     predictions_input = results;
@@ -123,8 +122,8 @@ function facemodelReady() {
   facemesh_input.predict(img);
 }
 function posemodelReady() {
-  console.log("Pose Model ready!");
-  poseNet_input.singlePose(img)
+  // console.log("Pose Model ready!");
+  // poseNet_input.singlePose(img)
 }
 function mode_transition(i) {
   // resizeCanvas(480, 640);
