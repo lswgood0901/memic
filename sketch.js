@@ -99,6 +99,7 @@ function draw() {
   if(input_flag){
     background(0)
     noTint();
+    // image(video, 0, 240, 1440, 1080);
     image(video, 0, 240, 1080, 1440);
     // image(video, 1080, 240, -1080, 1440);
     fill(0)
@@ -140,6 +141,7 @@ function mode_transition(i) {
   img = createImg('images/'+(shuffle_list[i]+1)+'.png', imageReady);
   img.size(1080, 1080);
   img.hide(); 
+  // video = createCapture(VIDEO);
   video = createCapture(frontSetting);
   
   video.size(1080, 1440);
@@ -312,7 +314,7 @@ function touchEnded() {
     button_flag = false
     saveFrames(video, 'jpg', 1, 1)
     setTimeout(() => {
-      button_flag=true
+      shot_flag = false
     }, 2000)
   }
   // if (dist(mouseX, mouseY, 540, 500) < 150) {
@@ -333,6 +335,7 @@ function feedback() {
     textAlign(CENTER)
     text(feedback_text[0], 276, 1440, 528, 72)
     pop()
+    shot_flag = false
   }
   else if (cur_status[0] == 1 && cur_status[1] == false) {
     push()
@@ -344,6 +347,7 @@ function feedback() {
     textAlign(CENTER)
     text(feedback_text[1], 276, 1440, 528, 72)
     pop()
+    shot_flag = false
   }
   else if (cur_status[0] == 2 && cur_status[1] == false) {
     push()
@@ -355,6 +359,7 @@ function feedback() {
     textAlign(CENTER)
     text(feedback_text[2], 276, 1440, 528, 72)
     pop()
+    shot_flag = false
   }
   else if (cur_status[0] == 2 && cur_status[1] == true) {
     push()
@@ -366,9 +371,13 @@ function feedback() {
     textAlign(CENTER)
     text(feedback_text[3], 276, 1440, 528, 72)
     pop()
+    shot_flag = true
     button_flag = false
     setTimeout(() => {
-      button_flag = true
+      if (!shot_flag) {
+        button_flag = true
+        shot_flag = false
+      }
     }, 1000);
   }
 }
