@@ -28,6 +28,7 @@ let hideBtn;
 let shotBtn;
 let showBtn;
 let backBtn;
+let frontSetting
 let face_aspect = 2.25;
 let cur_status = [0,false];
 let face_outline = [21, 54, 103, 67, 109, 10, 338, 297, 332,
@@ -64,6 +65,14 @@ function setup() {
   for (let i = 0; i < 25; i++) {
     button_list.push(new Button(i, img_list[shuffle_list[i]]))
   }
+  frontSetting = {
+    audio: false,
+    video: {
+      facingMode: {
+        exact: "user"
+      }
+    }
+  }
 } 
 
 function draw() {
@@ -91,6 +100,7 @@ function draw() {
     background(0)
     noTint();
     image(video, 0, 240, 1080, 1440);
+    // image(video, 1080, 240, -1080, 1440);
     fill(0)
     rect(0,1318,1080,400)
     image(shotBtn, 450, 1604, 180, 180)
@@ -130,14 +140,14 @@ function mode_transition(i) {
   img = createImg('images/'+(shuffle_list[i]+1)+'.png', imageReady);
   img.size(1080, 1080);
   img.hide(); 
-  video = createCapture(VIDEO);
+  video = createCapture(frontSetting);
   
   video.size(1080, 1440);
   
-  poseNet_video = ml5.poseNet(video);
-  poseNet_video.on('pose', function(results) {
-    poseNet_video_poses = results;
-  });
+  // poseNet_video = ml5.poseNet(video);
+  // poseNet_video.on('pose', function(results) {
+  //   poseNet_video_poses = results;
+  // });
   facemesh_video = ml5.facemesh(video);
   facemesh_video.on("predict", results => {
     predictions_video =  results;
@@ -151,6 +161,7 @@ function drawInput(toggle, prediction, poses) {
       if (flag) {
         
       }
+      
       const keypoints = prediction[i].scaledMesh
       for (let j = 0; j < keypoints.length; j += 1) {
         const [x1, y1] = keypoints[j];
